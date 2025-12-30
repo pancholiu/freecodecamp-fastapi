@@ -7,3 +7,7 @@
 ### 1.2 To activate the VA
 
 `.\venv\Scripts\activate`
+
+## 2. Run server
+
+`uvicorn main:app`
