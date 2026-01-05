@@ -1,11 +1,16 @@
-from fastapi import FastAPI, HTTPException, Response, status
+from . import models
+from .database import engine, get_db
+from fastapi import FastAPI, HTTPException, Response, status, Depends
 from pydantic import BaseModel
-from random import randrange
 # To retrieve name of column. Might not be needed in latest version
 from psycopg2.extras import RealDictCursor
+from sqlalchemy.orm import Session
 
 import psycopg2
 import time
+
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -31,27 +36,14 @@ while True:
         time.sleep(2)
 
 
-my_posts = [
-    {"title": "title of post 1", "content": "content of post 1", "id": 1},
-    {"title": "favorite foods", "content": "I like pizza", "id": 2}
-]
-
-
-def find_post(id):
-    for p in my_posts:
-        if p['id'] == id:
-            return p
-
-
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p['id'] == id:
-            return i
-
-
 @app.get("/")
 def root():
     return {"message": "Welcome to my API!"}
+
+
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+    return {"status": "Success"}
 
 
 @app.get("/posts")
