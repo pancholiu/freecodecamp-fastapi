@@ -1,7 +1,6 @@
-from . import models
+from . import models, schemas
 from .database import engine, get_db
 from fastapi import FastAPI, HTTPException, Response, status, Depends
-from pydantic import BaseModel
 # To retrieve name of column. Might not be needed in latest version
 from psycopg2.extras import RealDictCursor
 from sqlalchemy.orm import Session
@@ -13,12 +12,6 @@ import time
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
 
 
 while True:
@@ -51,7 +44,7 @@ def get_posts(db: Session = Depends(get_db)):
 
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_posts(post: Post, db: Session = Depends(get_db)):
+def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**post.model_dump())
 
     db.add(new_post)
@@ -88,7 +81,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 
 
 @app.put("/posts/{id}")
-def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
+def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
 
