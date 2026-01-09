@@ -4,6 +4,7 @@ import time
 import psycopg2
 from fastapi import FastAPI
 
+
 # To retrieve name of column. Might not be needed in latest version
 from psycopg2.extras import RealDictCursor
 
