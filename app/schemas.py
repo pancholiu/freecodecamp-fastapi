@@ -16,7 +16,11 @@ class PostCreate(PostBase):
 class Post(PostBase):
     id: int
     owner_id: int
+    owner: UserOut
     created_at: datetime
+
+    class Config:
+        orm_mode = True
 
 
 class UserCreate(BaseModel):
