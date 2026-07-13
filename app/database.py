@@ -5,8 +5,15 @@ import time
 import psycopg2
 # To retrieve name of column. Might not be needed in latest version
 from psycopg2.extras import RealDictCursor
+from .config import settings
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:1234@localhost/fastapi"
+SQLALCHEMY_DATABASE_URL = (
+    f"postgresql://{settings.DATABASE_USERNAME}:"
+    f"{settings.DATABASE_PASSWORD}@"
+    f"{settings.DATABASE_HOSTNAME}:"
+    f"{settings.DATABASE_PORT}/"
+    f"{settings.DATABASE_NAME}"
+)
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 

@@ -4,11 +4,12 @@ from datetime import datetime, timedelta, UTC
 from jose import JWTError, jwt
 from . import schemas, database, models
 from sqlalchemy.orm import Session
+from .config import settings
 
 
-SECRET_KEY = "hello_world_this_is_a_secret_key_for_jwt"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MIN
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 
