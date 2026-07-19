@@ -1,4 +1,5 @@
 __pycache__/
+venv/
 *.pyc
 tmp_*/
 tmp_*.zip
