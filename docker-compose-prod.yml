@@ -1,0 +1,27 @@
+services:
+  api:
+    image: pancholiu/fastapifcc
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOSTNAME: db
+    ports:
+      - "80:8000"
+    volumes:
+      - ./:/usr/src/app:ro
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
